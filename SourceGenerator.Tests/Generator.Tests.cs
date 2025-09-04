@@ -4,7 +4,7 @@
 public class Tests
 {
     [Test, Category("Generator.Tests")]
-    public void Test()
+    public void Compiles()
     {
         var generator = new Generator();
 
@@ -18,7 +18,7 @@ public class Tests
             .Create(generator)
             .RunGenerators(compilation);
 
-        var result = driver.GetRunResult();
+        driver.GetRunResult();
 
         Assert.Pass();
     }
