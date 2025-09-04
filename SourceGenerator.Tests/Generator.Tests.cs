@@ -24,7 +24,7 @@ public class Tests
             .Select(source => CSharpSyntaxTree.ParseText(source));
 
         var compilation = CSharpCompilation
-            .Create("Experimental.Common")
+            .Create($"{nameof(Experimental)}.{nameof(Common)}")
             .AddReferences(MetadataReference.CreateFromFile(typeof(Model).Assembly.Location))
             .AddSyntaxTrees(syntaxTrees);
 
