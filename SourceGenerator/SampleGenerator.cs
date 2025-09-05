@@ -23,7 +23,7 @@ public class SampleGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(sourceProvider, Generate);
     }
 
-    private static void Generate(SourceProductionContext context, (Compilation Left, ImmutableArray<Template>, ImmutableArray<ClassDeclarationSyntax>) sourceProvider)
+    private static void Generate(SourceProductionContext context, (Compilation, ImmutableArray<Template>, ImmutableArray<ClassDeclarationSyntax>) sourceProvider)
     {
         var (compilation, templates, classes) = sourceProvider;
 
