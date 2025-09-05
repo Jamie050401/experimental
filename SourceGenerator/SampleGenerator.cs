@@ -23,11 +23,11 @@ public class SampleGenerator : IIncrementalGenerator
         context.RegisterSourceOutput(sourceProvider, Generate);
     }
 
-    private static void Generate(SourceProductionContext context, (Compilation Left, ImmutableArray<(string Name, string Content)>, ImmutableArray<ClassDeclarationSyntax>) sourceProvider)
+    private static void Generate(SourceProductionContext context, (Compilation Left, ImmutableArray<Template>, ImmutableArray<ClassDeclarationSyntax>) sourceProvider)
     {
         var (compilation, templates, classes) = sourceProvider;
 
-        if (!Try(() => templates.First(t => t.Name == "Classes.t.cs"), out var template))
+        if (templates.TryGetTemplate("Classes.t.cs", out var template))
         {
             context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(
                 "SG0001",
@@ -37,6 +37,8 @@ public class SampleGenerator : IIncrementalGenerator
                 DiagnosticSeverity.Error,
                 true
             ), Location.None));
+
+            return;
         }
 
         var stringBuilder = new StringBuilder();
@@ -49,7 +51,7 @@ public class SampleGenerator : IIncrementalGenerator
             stringBuilder.Remove(stringBuilder.Length - 1, 3);
         }
 
-        var source = template.Content.Replace("${names}", stringBuilder.ToString());
+        var source = template!.Content.Replace("${names}", stringBuilder.ToString());
         context.AddSource("Classes.g.cs", source);
     }
 }

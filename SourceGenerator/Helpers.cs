@@ -2,23 +2,26 @@ namespace Experimental.SourceGenerator;
 
 public static class Helpers
 {
-    public static IncrementalValueProvider<ImmutableArray<(string Name, string Content)>> GetTemplateProvider(this IncrementalGeneratorInitializationContext context)
+    public static IncrementalValueProvider<ImmutableArray<Template>> GetTemplateProvider(this IncrementalGeneratorInitializationContext context)
     {
         return context.AdditionalTextsProvider
             .Where(additionalText => additionalText.Path.EndsWith(".t.cs"))
-            .Select((template, cancellationToken) => (Name: Path.GetFileName(template.Path), Content: template.GetText(cancellationToken)?.ToString()))
-            .Where(template => template is { Name: not null, Content: not null })
+            .Select((template, cancellationToken) =>
+            {
+                var content = template.GetText(cancellationToken)?.ToString();
+                return content == null ? null : new Template(Path.GetFileName(template.Path), content);
+            })
+            .Where(template => template != null)
             .Collect()!;
     }
 
-    // ReSharper disable once InconsistentNaming
-    public static bool Try<T>(Func<T> Function, out T? value)
+    public static bool TryGetTemplate(this ImmutableArray<Template> templates, string templateName, out Template? template)
     {
-        value = default;
+        template = null;
 
         try
         {
-            value = Function();
+            template = templates.First(t => t.Name == templateName);
             return true;
         }
         catch
