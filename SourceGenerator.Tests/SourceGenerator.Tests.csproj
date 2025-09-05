@@ -22,7 +22,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Common\Common.csproj" />
-      <ProjectReference Include="..\SourceGenerator\SourceGenerator.csproj" />
+      <ProjectReference Include="..\SourceGenerator\SourceGenerator.csproj" PrivateAssets="all" />
     </ItemGroup>
 
 </Project>

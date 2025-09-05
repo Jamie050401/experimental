@@ -6,7 +6,7 @@ public class Tests
     [Test, Category("Generator.Tests")]
     public void Compiles()
     {
-        var generator = new Generator();
+        var generator = new SampleGenerator();
 
         var solutionDirectory = Directory
             .GetCurrentDirectory()
@@ -19,7 +19,7 @@ public class Tests
 
         var syntaxTrees = Directory
             .EnumerateFiles(projectDirectory, "*.cs", SearchOption.AllDirectories)
-            .Where(sourceFile => !sourceFile.StartsWith(Path.Join(projectDirectory, "obj")))
+            .Where(sourceFile => !sourceFile.StartsWith(Path.Join(projectDirectory, "obj")) && !sourceFile.EndsWith(".t.cs"))
             .Select(File.ReadAllText)
             .Select(source => CSharpSyntaxTree.ParseText(source));
 
@@ -28,11 +28,11 @@ public class Tests
             .AddReferences(MetadataReference.CreateFromFile(typeof(Model).Assembly.Location))
             .AddSyntaxTrees(syntaxTrees);
 
-        var driver = CSharpGeneratorDriver
+        //var compilation = CSharpCompilation.Create($"{nameof(Experimental)}.{nameof(SourceGenerator)}.{nameof(Experimental.SourceGenerator.Tests)}");
+
+        CSharpGeneratorDriver
             .Create(generator)
             .RunGenerators(compilation);
-
-        driver.GetRunResult();
 
         Assert.Pass();
     }
