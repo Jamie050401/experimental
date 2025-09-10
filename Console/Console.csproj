@@ -12,15 +12,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Content Include="..\.gitignore" />
-        <Content Include="..\.dockerignore">
-            <Link>.dockerignore</Link>
-        </Content>
+        <None Include="..\.gitignore" />
+        <None Include="..\.dockerignore" />
     </ItemGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Common\Common.csproj" />
-        <ProjectReference Include="..\SourceGenerated\SourceGenerated.csproj" />
     </ItemGroup>
 
 </Project>

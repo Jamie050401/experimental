@@ -1,4 +1,4 @@
-global using static Experimental.SourceGenerator.Helpers;
+global using static Experimental.SourceGenerator.Common.Helpers;
 global using Microsoft.CodeAnalysis;
 global using Microsoft.CodeAnalysis.CSharp.Syntax;
 global using Microsoft.CodeAnalysis.Text;

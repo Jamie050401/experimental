@@ -1,9 +1,9 @@
 using Newtonsoft.Json;
 
-namespace Experimental.Common;
+namespace Experimental.Common.Models.JSON;
 
 [JsonObject]
-public class Model
+public class ProductModel
 {
     [JsonProperty("id")]
     public required Guid Id { get; init; }

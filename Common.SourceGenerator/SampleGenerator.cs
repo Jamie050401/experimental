@@ -1,4 +1,4 @@
-namespace Experimental.SourceGenerator;
+namespace Experimental.Common.SourceGenerator;
 
 [Generator]
 public class SampleGenerator : IIncrementalGenerator
@@ -15,10 +15,7 @@ public class SampleGenerator : IIncrementalGenerator
             .Where(cds => cds != null)
             .Collect();
 
-        var sourceProvider = context.CompilationProvider
-            .Combine(templateProvider)
-            .Combine(classProvider)
-            .Select((tuple, _) => (tuple.Left.Left, tuple.Left.Right, tuple.Right));
+        var sourceProvider = context.CompilationProvider.Combine(templateProvider, classProvider);
 
         context.RegisterSourceOutput(sourceProvider, Generate);
     }
@@ -31,8 +28,8 @@ public class SampleGenerator : IIncrementalGenerator
         {
             context.ReportDiagnostic(Diagnostic.Create(new DiagnosticDescriptor(
                 "SG0001",
-                "Missing required source generation template (Classes.t.cs).",
-                string.Empty,
+                "Missing Required Source Generation Template",
+                "Required source generation template (Classes.t.cs) was not found within the 'Templates' sub-directory. Please ensure it exists.",
                 string.Empty,
                 DiagnosticSeverity.Error,
                 true
